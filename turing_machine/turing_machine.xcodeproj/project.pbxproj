@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		981F16612703862E0029FD98 /* TestLexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981F16602703862E0029FD98 /* TestLexer.cpp */; };
 		9881D2AB26FE47B800C4748D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9881D2AA26FE47B800C4748D /* main.cpp */; };
 		9881D2CB26FE4E8900C4748D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9881D2CA26FE4E8900C4748D /* main.cpp */; };
 		9881D2D626FE511800C4748D /* test_foo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9881D2D526FE511800C4748D /* test_foo.cpp */; };
@@ -35,6 +36,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		981F165C270382E70029FD98 /* Lexer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Lexer.hpp; sourceTree = "<group>"; };
+		981F165D270383100029FD98 /* TokenCollector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TokenCollector.hpp; sourceTree = "<group>"; };
+		981F165F270385710029FD98 /* TokenCollectorMock.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TokenCollectorMock.hpp; sourceTree = "<group>"; };
+		981F16602703862E0029FD98 /* TestLexer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestLexer.cpp; sourceTree = "<group>"; };
 		9881D2A726FE47B800C4748D /* turing_machine */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = turing_machine; sourceTree = BUILT_PRODUCTS_DIR; };
 		9881D2AA26FE47B800C4748D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9881D2C826FE4E8900C4748D /* turing_machine_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = turing_machine_tests; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,6 +69,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		981F165B270382CC0029FD98 /* Compiler */ = {
+			isa = PBXGroup;
+			children = (
+				981F165C270382E70029FD98 /* Lexer.hpp */,
+				981F165D270383100029FD98 /* TokenCollector.hpp */,
+			);
+			path = Compiler;
+			sourceTree = "<group>";
+		};
+		981F165E2703855A0029FD98 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				981F165F270385710029FD98 /* TokenCollectorMock.hpp */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		9881D29E26FE47B800C4748D = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +107,7 @@
 		9881D2A926FE47B800C4748D /* turing_machine */ = {
 			isa = PBXGroup;
 			children = (
+				981F165B270382CC0029FD98 /* Compiler */,
 				9881D2AA26FE47B800C4748D /* main.cpp */,
 				9881D2D026FE4FC900C4748D /* foo.hpp */,
 				9881D2D126FE500700C4748D /* bar.hpp */,
@@ -95,10 +118,12 @@
 		9881D2C926FE4E8900C4748D /* turing_machine_tests */ = {
 			isa = PBXGroup;
 			children = (
+				981F165E2703855A0029FD98 /* Mocks */,
 				9881D2CA26FE4E8900C4748D /* main.cpp */,
 				9881D2CF26FE4EBF00C4748D /* catch.hpp */,
 				9881D2D526FE511800C4748D /* test_foo.cpp */,
 				9881D2D726FE525F00C4748D /* test_bar.cpp */,
+				981F16602703862E0029FD98 /* TestLexer.cpp */,
 			);
 			path = turing_machine_tests;
 			sourceTree = "<group>";
@@ -191,6 +216,7 @@
 			files = (
 				9881D2D826FE525F00C4748D /* test_bar.cpp in Sources */,
 				9881D2D626FE511800C4748D /* test_foo.cpp in Sources */,
+				981F16612703862E0029FD98 /* TestLexer.cpp in Sources */,
 				9881D2CB26FE4E8900C4748D /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
