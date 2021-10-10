@@ -6,35 +6,40 @@
 struct TokenCollectorMock : TokenCollector {
     std::string tokens{};
     
-    void open(int line, int col) {
-        addToken("O");
+    void openBrace(long line, long col) {
+        addToken("OB");
     }
     
-    void close(int line, int col) {
-        addToken("C");
+    void closeBrace(long line, long col) {
+        addToken("CB");
     }
     
-    void name(const std::string &name, int line, int col) {
-        addToken("$" + name + "$");
+    void openAngle(long line, long col) {
+        addToken("OA");
     }
     
-    void symbol(char symbol, int line, int col) {
-        addToken("#" + std::to_string(symbol) + "#");
+    void closeAngle(long line, long col) {
+        addToken("CA");
     }
     
-    void direction(int line, int col) {
+    void dash(long line, long col) {
         addToken("D");
     }
     
-    void wildcard(int line, int col) {
-        addToken("W");
+    void colon(long line, long col) {
+        addToken("C");
     }
     
-    void separator(int line, int col) {
-        addToken("S");
+    void symbol(char symbol, long line, long col) {
+        using namespace std::string_literals;
+        addToken("#"s + symbol + "#"s);
     }
     
-    void error(int line, int col) {
+    void name(const std::string &name, long line, long col) {
+        addToken("$" + name + "$");
+    }
+    
+    void error(long line, long col) {
         addToken("E" + std::to_string(line) + "/" + std::to_string(col));
     }
     
