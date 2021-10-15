@@ -10,7 +10,7 @@ struct TokenCollectorMock : TokenCollector {
         addToken("OB");
     }
     
-    void closeBrace(long line, long col) {
+    void closedBrace(long line, long col) {
         addToken("CB");
     }
     
@@ -18,7 +18,7 @@ struct TokenCollectorMock : TokenCollector {
         addToken("OA");
     }
     
-    void closeAngle(long line, long col) {
+    void closedAngle(long line, long col) {
         addToken("CA");
     }
     

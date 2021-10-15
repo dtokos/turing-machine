@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		981E473B2719E5F200097037 /* TestParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981E473A2719E5F200097037 /* TestParser.cpp */; };
 		981F16612703862E0029FD98 /* TestLexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981F16602703862E0029FD98 /* TestLexer.cpp */; };
 		9881D2AB26FE47B800C4748D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9881D2AA26FE47B800C4748D /* main.cpp */; };
 		9881D2CB26FE4E8900C4748D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9881D2CA26FE4E8900C4748D /* main.cpp */; };
@@ -34,10 +35,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		981E47382719E2F500097037 /* TMSyntax.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TMSyntax.hpp; sourceTree = "<group>"; };
+		981E47392719E56E00097037 /* Parser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Parser.hpp; sourceTree = "<group>"; };
+		981E473A2719E5F200097037 /* TestParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestParser.cpp; sourceTree = "<group>"; };
+		981E473C2719E75300097037 /* ParserState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ParserState.hpp; sourceTree = "<group>"; };
+		981E473D2719E78000097037 /* ParserEvent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ParserEvent.hpp; sourceTree = "<group>"; };
 		981F165C270382E70029FD98 /* Lexer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Lexer.hpp; sourceTree = "<group>"; };
 		981F165D270383100029FD98 /* TokenCollector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TokenCollector.hpp; sourceTree = "<group>"; };
 		981F165F270385710029FD98 /* TokenCollectorMock.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TokenCollectorMock.hpp; sourceTree = "<group>"; };
 		981F16602703862E0029FD98 /* TestLexer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestLexer.cpp; sourceTree = "<group>"; };
+		983DE6C92719EE540035A68E /* Builder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Builder.hpp; sourceTree = "<group>"; };
+		983DE6CA2719EEFB0035A68E /* SyntaxBuilder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SyntaxBuilder.hpp; sourceTree = "<group>"; };
 		9881D2A726FE47B800C4748D /* turing_machine */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = turing_machine; sourceTree = BUILT_PRODUCTS_DIR; };
 		9881D2AA26FE47B800C4748D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9881D2C826FE4E8900C4748D /* turing_machine_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = turing_machine_tests; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,11 +71,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		981F165B270382CC0029FD98 /* Compiler */ = {
+		981E47362719E25E00097037 /* Lexer */ = {
 			isa = PBXGroup;
 			children = (
 				981F165C270382E70029FD98 /* Lexer.hpp */,
 				981F165D270383100029FD98 /* TokenCollector.hpp */,
+			);
+			path = Lexer;
+			sourceTree = "<group>";
+		};
+		981E47372719E28600097037 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				981E47382719E2F500097037 /* TMSyntax.hpp */,
+				981E47392719E56E00097037 /* Parser.hpp */,
+				981E473C2719E75300097037 /* ParserState.hpp */,
+				981E473D2719E78000097037 /* ParserEvent.hpp */,
+				983DE6C92719EE540035A68E /* Builder.hpp */,
+				983DE6CA2719EEFB0035A68E /* SyntaxBuilder.hpp */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		981F165B270382CC0029FD98 /* Compiler */ = {
+			isa = PBXGroup;
+			children = (
+				981E47362719E25E00097037 /* Lexer */,
+				981E47372719E28600097037 /* Parser */,
 			);
 			path = Compiler;
 			sourceTree = "<group>";
@@ -114,6 +144,7 @@
 				9881D2CA26FE4E8900C4748D /* main.cpp */,
 				9881D2CF26FE4EBF00C4748D /* catch.hpp */,
 				981F16602703862E0029FD98 /* TestLexer.cpp */,
+				981E473A2719E5F200097037 /* TestParser.cpp */,
 			);
 			path = turing_machine_tests;
 			sourceTree = "<group>";
@@ -206,6 +237,7 @@
 			files = (
 				981F16612703862E0029FD98 /* TestLexer.cpp in Sources */,
 				9881D2CB26FE4E8900C4748D /* main.cpp in Sources */,
+				981E473B2719E5F200097037 /* TestParser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

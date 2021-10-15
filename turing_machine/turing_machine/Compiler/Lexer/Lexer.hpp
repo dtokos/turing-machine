@@ -71,13 +71,13 @@ private:
                 collector.openBrace(lineNumber, columnNumber(cursor));
                 break;
             case '}':
-                collector.closeBrace(lineNumber, columnNumber(cursor));
+                collector.closedBrace(lineNumber, columnNumber(cursor));
                 break;
             case '<':
                 collector.openAngle(lineNumber, columnNumber(cursor));
                 break;
             case '>':
-                collector.closeAngle(lineNumber, columnNumber(cursor));
+                collector.closedAngle(lineNumber, columnNumber(cursor));
                 break;
             case '-':
                 collector.dash(lineNumber, columnNumber(cursor));
