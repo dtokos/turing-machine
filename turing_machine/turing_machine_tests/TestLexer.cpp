@@ -2,7 +2,7 @@
 #include "Lexer.hpp"
 #include "Mocks/TokenCollectorMock.hpp"
 
-TEST_CASE("Test Lexer", "[compiler]") {
+TEST_CASE("Test Lexer", "[compiler][lexer]") {
     TokenCollectorMock collector{};
     Lexer lexer{collector};
     
@@ -131,6 +131,35 @@ TEST_CASE("Test Lexer", "[compiler]") {
         SECTION("Lorem Ipsum") {
             lexer.lex("Lorem ipsum dolor sit amet consectetur adipiscing elit");
             REQUIRE( collector.tokens == "$Lorem$,$ipsum$,$dolor$,$sit$,$amet$,$consectetur$,$adipiscing$,$elit$" );
+        };
+    };
+    
+    SECTION("Header Tests") {
+        SECTION("Compact") {
+            lexer.lex("n1:v1");
+            REQUIRE( collector.tokens == "$n1$,C,$v1$" );
+        };
+        
+        SECTION("Loose") {
+            lexer.lex("n1 : v1");
+            REQUIRE( collector.tokens == "$n1$,C,$v1$" );
+        };
+    };
+    
+    SECTION("Rules") {
+        SECTION("Single") {
+            lexer.lex("s1 a - - b");
+            REQUIRE( collector.tokens == "$s1$,#a#,D,D,#b#" );
+        };
+        
+        SECTION("Multi") {
+            lexer.lex("s1 {a - - b c - - d}");
+            REQUIRE( collector.tokens == "$s1$,OB,#a#,D,D,#b#,#c#,D,D,#d#,CB" );
+        };
+        
+        SECTION("Multi Group") {
+            lexer.lex("s1 {{a b} - - {c d}}");
+            REQUIRE( collector.tokens == "$s1$,OB,OB,#a#,#b#,CB,D,D,OB,#c#,#d#,CB,CB" );
         };
     };
 };

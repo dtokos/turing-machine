@@ -35,6 +35,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9810E4C72729B7C10074339A /* FilePosition.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FilePosition.hpp; sourceTree = "<group>"; };
 		981E47382719E2F500097037 /* TMSyntax.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TMSyntax.hpp; sourceTree = "<group>"; };
 		981E47392719E56E00097037 /* Parser.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Parser.hpp; sourceTree = "<group>"; };
 		981E473A2719E5F200097037 /* TestParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestParser.cpp; sourceTree = "<group>"; };
@@ -98,6 +99,7 @@
 			children = (
 				981E47362719E25E00097037 /* Lexer */,
 				981E47372719E28600097037 /* Parser */,
+				9810E4C72729B7C10074339A /* FilePosition.hpp */,
 			);
 			path = Compiler;
 			sourceTree = "<group>";

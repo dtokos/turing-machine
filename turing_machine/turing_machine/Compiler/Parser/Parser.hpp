@@ -10,42 +10,54 @@
 struct Parser : TokenCollector {
     Parser(Builder &builder) : builder{builder} {}
     
-    void openBrace(long line, long col) {
-        handleEvent(OpenBrace, line, col);
+    void openBrace(const FilePosition pos) {
+        handleEvent(OpenBrace, pos);
     }
     
-    void closedBrace(long line, long col) {
-        handleEvent(ClosedBrace, line, col);
+    void closedBrace(const FilePosition pos) {
+        handleEvent(ClosedBrace, pos);
     }
     
-    void openAngle(long line, long col) {
-        handleEvent(OpenAngle, line, col);
+    void openAngle(const FilePosition pos) {
+        handleEvent(OpenAngle, pos);
     }
     
-    void closedAngle(long line, long col) {
-        handleEvent(ClosedAngle, line, col);
+    void closedAngle(const FilePosition pos) {
+        handleEvent(ClosedAngle, pos);
     }
     
-    void dash(long line, long col) {
-        handleEvent(Dash, line, col);
+    void dash(const FilePosition pos) {
+        handleEvent(Dash, pos);
     }
     
-    void colon(long line, long col) {
-        handleEvent(Colon, line, col);
+    void colon(const FilePosition pos) {
+        handleEvent(Colon, pos);
     }
     
-    void symbol(char symbol, long line, long col) {
+    void symbol(char symbol, const FilePosition pos) {
         builder.setSymbol(symbol);
-        handleEvent(Symbol, line, col);
+        handleEvent(Symbol, pos);
     }
     
-    void name(const std::string &name, long line, long col) {
+    void name(const std::string &name, const FilePosition pos) {
         builder.setName(name);
-        handleEvent(Name, line, col);
+        handleEvent(Name, pos);
     }
     
-    void error(long line, long col) {
-        builder.syntaxError(line, col);
+    void error(const FilePosition pos) {
+        builder.syntaxError(pos);
+    }
+    
+    void handleEvent(ParserEvent event, const FilePosition pos) {
+        for (const auto &t : transitions) {
+            if (t.state == state && t.event == event) {
+                t.action(builder);
+                state = t.newState;
+                return;
+            }
+        }
+        
+        handleEventError(event, pos);
     }
     
 private:
@@ -76,7 +88,7 @@ private:
         Transition{Body,    Name,           RInputState,    [](Builder &b){ b.newRuleWithState(); }},
         Transition{Body,    ClosedBrace,    End,            [](Builder &b){ b.done(); }},
         
-        Transition{RInputState, Symbol,     SRInputSymbol,  [](Builder &b){ b.setInputSymbol(); }},
+        Transition{RInputState, Symbol,     SRInputSymbol,  [](Builder &b){ b.addInputSymbol(); }},
         Transition{RInputState, OpenBrace,  MRInputState},
         
         Transition{SRInputSymbol, OpenAngle,    SRDirection, [](Builder &b){ b.setDirectionLeft(); }},
@@ -86,12 +98,12 @@ private:
         Transition{SRDirection, Name, SROutputState, [](Builder &b){ b.setOutputState(); }},
         Transition{SRDirection, Dash, SROutputState, [](Builder &b){ b.setNullOutputState(); }},
         
-        Transition{SROutputState, Symbol,   Body, [](Builder &b){ b.setOutputSymbol(); }},
-        Transition{SROutputState, Dash,     Body, [](Builder &b){ b.setNullOutputSymbol(); }},
+        Transition{SROutputState, Symbol,   Body, [](Builder &b){ b.addOutputSymbol(); b.addRuleBody(); b.addRule(); }},
+        Transition{SROutputState, Dash,     Body, [](Builder &b){ b.setNullOutputSymbol(); b.addRuleBody(); b.addRule(); }},
         
-        Transition{MRInputState, Symbol,        MRInputSymbol,      [](Builder &b){ b.newInputSymbolGroupWithSymbol(); }},
-        Transition{MRInputState, OpenBrace,     MRInputSymbolGroup, [](Builder &b){ b.newInputSymbolGroup(); }},
-        Transition{MRInputState, ClosedBrace,   Body}, // TODO: Add action
+        Transition{MRInputState, Symbol,        MRInputSymbol,      [](Builder &b){ b.addInputSymbol(); }},
+        Transition{MRInputState, OpenBrace,     MRInputSymbolGroup, [](Builder &b){ b.addInputSymbol(); }},
+        Transition{MRInputState, ClosedBrace,   Body,               [](Builder &b){ b.addRule(); }},
         
         Transition{MRInputSymbolGroup, Symbol,      MRInputSymbolGroup, [](Builder &b){ b.addInputSymbol(); }},
         Transition{MRInputSymbolGroup, ClosedBrace, MRInputSymbol},
@@ -103,28 +115,15 @@ private:
         Transition{MRDirection, Name, MROutputState, [](Builder &b){ b.setOutputState(); }},
         Transition{MRDirection, Dash, MROutputState, [](Builder &b){ b.setNullOutputState(); }},
         
-        Transition{MROutputState, Symbol,       MRInputState,           [](Builder &b){ b.setOutputSymbol(); }},
+        Transition{MROutputState, Symbol,       MRInputState,           [](Builder &b){ b.addOutputSymbol(); b.addRuleBody(); }},
         Transition{MROutputState, OpenBrace,    MROutputSymbolGroup,    [](Builder &b){ b.newOutputSymbolGroup(); }},
         
         Transition{MROutputSymbolGroup, Symbol,         MROutputSymbolGroup, [](Builder &b){ b.addOutputSymbol(); }},
         Transition{MROutputSymbolGroup, Dash,           MROutputSymbolGroup, [](Builder &b){ b.addNullOutputSymbol(); }},
-        Transition{MROutputSymbolGroup, ClosedBrace,    MRInputState}, // TODO: Add action
+        Transition{MROutputSymbolGroup, ClosedBrace,    MRInputState,        [](Builder &b){ b.addRuleBody(); }},
     };
     
-    
-    void handleEvent(ParserEvent event, long line, long col) {
-        for (const auto &t : transitions) {
-            if (t.state == state && t.event == event) {
-                t.action(builder);
-                state = t.newState;
-                return;
-            }
-        }
-        
-        handleEventError(event, line, col);
-    }
-    
-    void handleEventError(ParserEvent event, long line, long col) {
+    void handleEventError(ParserEvent event, const FilePosition pos) {
         // TODO: Implement error handling
     }
 };

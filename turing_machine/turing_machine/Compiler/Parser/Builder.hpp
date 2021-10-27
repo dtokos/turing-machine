@@ -2,6 +2,7 @@
 #define Builder_hpp
 
 #include <string>
+#include "../FilePosition.hpp"
 
 struct Builder {
     virtual void setSymbol(char symbol) = 0;
@@ -11,10 +12,12 @@ struct Builder {
     virtual void addHeaderWithValue() = 0;
     
     virtual void newRuleWithState() = 0;
+    virtual void addRule() = 0;
+    virtual void addRuleBody() = 0;
     
-    virtual void setInputSymbol() = 0; // TODO: Sort out and simplify
-    virtual void newInputSymbolGroupWithSymbol() = 0;
-    virtual void newInputSymbolGroup() = 0;
+    //virtual void setInputSymbol() = 0; // TODO: Sort out and simplify
+    //virtual void newInputSymbolGroupWithSymbol() = 0;
+    //virtual void newInputSymbolGroup() = 0;
     virtual void addInputSymbol() = 0;
     
     virtual void setDirectionLeft() = 0;
@@ -25,13 +28,13 @@ struct Builder {
     virtual void setOutputState() = 0;
     
     virtual void setNullOutputSymbol() = 0; // TODO: Sort out and simplify
-    virtual void setOutputSymbol() = 0;
+    //virtual void setOutputSymbol() = 0;
     virtual void newOutputSymbolGroup() = 0;
     virtual void addOutputSymbol() = 0;
     virtual void addNullOutputSymbol() = 0;
 
     virtual void done() = 0;
-    virtual void syntaxError(long line, long col);
+    virtual void syntaxError(const FilePosition pos) = 0;
 };
 
 #endif

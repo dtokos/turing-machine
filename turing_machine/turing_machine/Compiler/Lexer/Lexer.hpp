@@ -4,6 +4,7 @@
 #include <sstream>
 #include <regex>
 #include "./TokenCollector.hpp"
+#include "../FilePosition.hpp"
 
 struct Lexer {
     Lexer(TokenCollector &collector) : collector{collector} {}
@@ -23,13 +24,13 @@ struct Lexer {
 private:
     TokenCollector &collector;
     
-    int lineNumber{};
+    std::size_t lineNumber{};
     std::string::const_iterator lineStart{};
     std::string::const_iterator lineEnd{};
     
     const std::regex whitespacePattern{R"/(^\s+)/"};
-    const std::regex symbolPattern{R"/(^.{1}(?:\s+|$))/"};
-    const std::regex namePattern{R"/(^(\w{2,})(?:\s+|$))/"};
+    const std::regex symbolPattern{R"/(^.{1}(?:[\s{}<>\-:]+|$))/"};
+    const std::regex namePattern{R"/(^(\w{2,})(?:\W+|$))/"};
     
     void lexLine(const std::string &line) {
         auto cursor = std::begin(line);
@@ -40,7 +41,7 @@ private:
     void lexToken(std::string::const_iterator &cursor) {
         if (!findToken(cursor)) {
             ++cursor;
-            collector.error(lineNumber, columnNumber(cursor));
+            collector.error(position(cursor));
         }
     }
     
@@ -68,22 +69,22 @@ private:
     bool findSingleCharToken(std::string::const_iterator &cursor) {
         switch (*cursor) {
             case '{':
-                collector.openBrace(lineNumber, columnNumber(cursor));
+                collector.openBrace(position(cursor));
                 break;
             case '}':
-                collector.closedBrace(lineNumber, columnNumber(cursor));
+                collector.closedBrace(position(cursor));
                 break;
             case '<':
-                collector.openAngle(lineNumber, columnNumber(cursor));
+                collector.openAngle(position(cursor));
                 break;
             case '>':
-                collector.closedAngle(lineNumber, columnNumber(cursor));
+                collector.closedAngle(position(cursor));
                 break;
             case '-':
-                collector.dash(lineNumber, columnNumber(cursor));
+                collector.dash(position(cursor));
                 break;
             case ':':
-                collector.colon(lineNumber, columnNumber(cursor));
+                collector.colon(position(cursor));
                 break;
                 
             default:
@@ -99,7 +100,7 @@ private:
         std::regex_search(cursor, lineEnd, match, symbolPattern);
         
         if (!match.empty()) {
-            collector.symbol(*cursor, lineNumber, columnNumber(cursor));
+            collector.symbol(*cursor, position(cursor));
             ++cursor;
             return true;
         }
@@ -112,7 +113,7 @@ private:
         std::regex_search(cursor, lineEnd, match, namePattern);
         
         if (!match.empty()) {
-            collector.name(match.str(1), lineNumber, columnNumber(cursor));
+            collector.name(match.str(1), position(cursor));
             cursor += match.length(1);
             return true;
         }
@@ -120,8 +121,8 @@ private:
         return false;
     }
     
-    long columnNumber(const std::string::const_iterator &cursor) {
-        return cursor - lineStart;
+    FilePosition position(const std::string::const_iterator &cursor) {
+        return FilePosition{lineNumber, static_cast<std::size_t>(cursor - lineStart)};
     }
 };
 

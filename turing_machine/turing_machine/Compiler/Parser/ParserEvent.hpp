@@ -11,6 +11,8 @@ enum ParserEvent {
     
     Symbol,
     Name,
+    
+    EoF,
 };
 
 #endif
